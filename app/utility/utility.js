@@ -12,48 +12,51 @@ export default function callApi(userName, pageNo, res1){
         }
       
        };
-    console.log(options);
-    let body = [];
-    var req = http.get(options, (res) => {
-    console.log(`STATUS: ${res.statusCode}`);
-      res.on('data', chunk => {
-      	body.push(chunk);
+  console.log(options);
+  let body = [];
+  var req = http.get(options, (res) => {
+  console.log(`STATUS: ${res.statusCode}`);
+  res.on('data', chunk => {
+    body.push(chunk);
 
-      })
-     .on('end',(data) => {
+  })
+  .on('end',(data) => {
       
-       SearchQueries.update({stringQuery: userName}, { $inc : { noOfSearch: 1 } },(err,doc) => {
-         if(err)
-            console.log(err);
-         else{
-            console.log("value has been incremented");
-          }
+    SearchQueries.update({stringQuery: userName}, { $inc : { noOfSearch: 1 } },(err,doc) => {
+      if(err)
+        console.log(err);
+      else{
+        console.log("value has been incremented");
+      }
 
-       });
+    });
 
-     	body = Buffer.concat(body).toString();
-     	body = JSON.parse(body);
-     	let result = body.items;
-     	result.map(data => {
-     		data = _.pick(data, 'login', 'url');
-     		let add = new Gituser(data);
-            add.save(function(err, dataobj){
-              if(err)
-                console.log(err);
-              else{
+    body = Buffer.concat(body).toString();
+    body = JSON.parse(body);
+    let result = body.items;
+    result.map(data => {
+     	data = _.pick(data, 'login', 'url');
+     	let add = new Gituser(data);
+      add.save(function(err, dataobj){
+        if(err)
+          console.log(err);
+        else{
+          console.log(dataobj);        
+        }
+      });
 
-                //do something
-              }
-            });
-     	});
-      res1.send(result);
+  	});
+
+    res1.send(result);
      	 
        
-     })
-   .on('error', e => {
+  })
+
+   
+  .on('error', e => {
       console.log(e);
     });
-  });
 
-
+ });
+  
 }

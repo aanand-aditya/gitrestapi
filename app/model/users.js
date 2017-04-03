@@ -11,6 +11,4 @@ let userSchema = Schema({
 
 );
 
-//userSchema.index({'login': 1, 'id': 1}, {unique: true});
-
 export default mongoose.model("Gituser", userSchema);

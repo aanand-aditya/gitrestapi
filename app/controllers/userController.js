@@ -12,24 +12,24 @@ export default class UserController{
     SearchQueries
   	 .findOne().where('stringQuery').equals(userName)
   	 .then(data => {
-      if(data != null){
-        let searchPage = data.noOfSearch;
-        console.log(searchPage);
-        if(searchPage <= pageNo)
-        {
-      	  callApi(userName, pageNo, res1);
-        }
-        else{
-          Gituser
-          .find({login: {$regex: userName}})
-          .skip(30*(pageNo-1))
-          .then(data => {
-            let arr = [];
-            data.map(res =>{
-              res = _.pick(res, 'login', 'url');
-              arr.push(res);
-            })
-            res1.send(arr);
+       if(data != null){
+         let searchPage = data.noOfSearch;
+         console.log(searchPage);
+         if(searchPage <= pageNo)
+         {
+      	   callApi(userName, pageNo, res1);
+         }
+         else{
+           Gituser
+           .find({login: {$regex: userName}})
+           .skip(30*(pageNo-1))
+           .then(data => {
+             let resultData = [];
+             data.map(res =>{
+               res = _.pick(res, 'login', 'url');
+               resultData.push(res);
+             })
+             res1.send(resultData);
           })
          .catch(err => {
            res1.send(err);
