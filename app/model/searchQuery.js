@@ -3,7 +3,7 @@ import {connect} from "../../lib/connection"
 let Schema = mongoose.Schema;
 
 let querySchema = Schema({
-  searchQuery: String,
+  stringQuery: String,
   noOfSearch: Number
 },
  
@@ -13,4 +13,4 @@ let querySchema = Schema({
 
 //userSchema.index({'login': 1, 'id': 1}, {unique: true});
 
-export default mongoose.model("SearchQuery", userSchema);
+export default mongoose.model("SearchQueries", querySchema);
